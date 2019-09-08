@@ -198,7 +198,7 @@ class SpotifyApi {
   ): Promise<void> {
     await this.request(
       {
-        uri: `/track/${trackId}`,
+        uri: `/tracks/${trackId}`,
         error: "Error getting track"
       },
       (data: Types.Track) => {
