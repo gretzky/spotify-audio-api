@@ -250,19 +250,6 @@ class SpotifyApi {
   }
 
   /**
-   * searchQuery - search querystring handler
-   *
-   * @param query - search query
-   * @param type - type of search to perform
-   */
-  private async searchQuery(query: string, type: string) {
-    return qs.stringify({
-      q: query,
-      type: type
-    });
-  }
-
-  /**
    * searchArtists - search for an artist
    *
    * @param query - search query
@@ -272,9 +259,14 @@ class SpotifyApi {
     query: string,
     callback: (e?: any) => void
   ): Promise<void> {
+    const config = qs.stringify({
+      q: query,
+      type: "artist"
+    });
+
     await this.request(
       {
-        uri: `/search?${this.searchQuery(query, "artist")}`,
+        uri: `/search?${config}`,
         error: "Error searching artists"
       },
       (data: Types.ArtistSearch) => {
@@ -293,9 +285,14 @@ class SpotifyApi {
     query: string,
     callback: (e?: any) => void
   ): Promise<void> {
+    const config = qs.stringify({
+      q: query,
+      type: "track"
+    });
+
     await this.request(
       {
-        uri: `/search?${this.searchQuery(query, "track")}`,
+        uri: `/search?${config}`,
         error: "Error searching tracks"
       },
       (data: Types.TrackSearch) => {
@@ -314,9 +311,14 @@ class SpotifyApi {
     query: string,
     callback: (e?: any) => void
   ): Promise<void> {
+    const config = qs.stringify({
+      q: query,
+      type: "album"
+    });
+
     await this.request(
       {
-        uri: `/search?${this.searchQuery(query, "album")}`,
+        uri: `/search?${config}`,
         error: "Error searching albums"
       },
       (data: Types.AlbumSearch) => {
