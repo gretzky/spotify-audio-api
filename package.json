@@ -1,0 +1,45 @@
+{
+  "name": "spotify-audio-api",
+  "version": "0.1.0",
+  "description": "Spotify API wrapper to return audio metadata",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gretzky/spotify-audio-api.git"
+  },
+  "main": "build/index.js",
+  "scripts": {
+    "build": "rimraf build && tsc",
+    "prepare": "yarn run build"
+  },
+  "files": [
+    "build/**"
+  ],
+  "keywords": [
+    "spotify",
+    "spotify-api",
+    "axios",
+    "fetch",
+    "audio",
+    "echonest",
+    "music",
+    "api",
+    "wrapper",
+    "client",
+    "web api",
+    "audio analysis",
+    "client credentials",
+    "node-spotify-api",
+    "spotify web api",
+    "spotify api"
+  ],
+  "dependencies": {
+    "axios": "^0.19.0",
+    "querystring": "^0.2.0"
+  },
+  "devDependencies": {
+    "@types/node": "^12.7.4",
+    "rimraf": "^3.0.0",
+    "typescript": "^3.6.2"
+  }
+}
