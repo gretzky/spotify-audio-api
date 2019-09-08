@@ -1,6 +1,6 @@
 {
   "name": "spotify-audio-api",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "Spotify API wrapper to return audio metadata",
   "license": "MIT",
   "repository": {
