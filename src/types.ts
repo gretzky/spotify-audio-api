@@ -158,7 +158,7 @@ interface BasicAudioFeatures {
  * ANALYSIS
  */
 
-type AudioFeatures = Omit<
+export type AudioFeatures = Omit<
   BasicAudioFeatures,
   | "tempo_confidence"
   | "key_confidence"
