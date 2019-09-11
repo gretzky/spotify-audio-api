@@ -37,20 +37,19 @@ export interface Paged {
  * ARTIST
  */
 
-export interface ArtistSimple {
+export interface Artist extends ArtistSimple {
   external_urls: ExternalUrl;
+  followers: Followers;
+  genres: string[];
   href: string;
   id: string;
   name: string;
+  popularity: number;
   type: string;
   uri: string;
 }
 
-export interface Artist extends ArtistSimple {
-  followers: Followers;
-  genres: string[];
-  popularity: number;
-}
+type ArtistSimple = Omit<Artist, "followers" | "genres" | "popularity">;
 
 export interface ArtistSimplePaged extends Paged {
   items: ArtistSimple[];
@@ -68,29 +67,28 @@ export interface RelatedArtists {
  * TRACK
  */
 
-export interface TrackSimple {
+export interface Track extends TrackSimple {
+  album_type: string;
   artists: ArtistSimple[];
   available_markets: string[];
   disc_number: number;
   duration_ms: number;
   explicit: boolean;
+  external_ids: ExternalId;
   external_urls: ExternalUrl;
   href: string;
   id: string;
   is_local: boolean;
   restrictions: any;
   name: string;
+  popularity: number;
   preview_url: string;
   track_number: number;
   type: string;
   uri: string;
 }
 
-export interface Track extends TrackSimple {
-  album_type: string;
-  external_ids: ExternalId;
-  popularity: number;
-}
+type TrackSimple = Omit<Track, "album_type" | "external_ids" | "popularity">;
 
 export interface TrackSimplePaged extends Paged {
   items: TrackSimple;
@@ -108,31 +106,33 @@ export interface TrackSearch {
  * ALBUM
  */
 
-export interface AlbumSimple {
+export interface Album extends AlbumSimple {
   album_group?: string;
   album_type: string;
   artists: ArtistSimple[];
   available_markets: string[];
+  copyrights: Copyright[];
+  external_ids: ExternalId;
   external_urls: ExternalUrl;
+  genres: string[];
   href: string;
   id: string;
   images: Image[];
+  label: string;
   name: string;
+  popularity: number;
   release_date: string;
   release_date_precision: string;
   restrictions: any;
+  tracks: TrackSimplePaged;
   type: string;
   uri: string;
 }
 
-export interface Album extends AlbumSimple {
-  copyrights: Copyright[];
-  external_ids: ExternalId;
-  genres: string[];
-  label: string;
-  popularity: number;
-  tracks: TrackSimplePaged;
-}
+type AlbumSimple = Omit<
+  Album,
+  "copyrights" | "external_ids" | "genres" | "label" | "popularity" | "tracks"
+>;
 
 export interface AlbumSimplePaged extends Paged {
   items: AlbumSimple;
@@ -142,11 +142,29 @@ export interface AlbumSearch {
   albums: AlbumSimplePaged;
 }
 
+interface BasicAudioFeatures {
+  loudness: number;
+  tempo: number;
+  tempo_confidence: number;
+  key: number;
+  key_confidence: number;
+  mode: number;
+  mode_confidence: number;
+  time_signature: number;
+  time_signature_confidence: number;
+}
+
 /**
  * ANALYSIS
  */
 
-export interface AudioFeatures {
+type AudioFeatures = Omit<
+  BasicAudioFeatures,
+  | "tempo_confidence"
+  | "key_confidence"
+  | "mode_confidence"
+  | "time_signature_confidence"
+> & {
   acousticness: number;
   analysis_url: string;
   danceability: number;
@@ -154,18 +172,13 @@ export interface AudioFeatures {
   energy: number;
   id: string;
   instrumentalness: number;
-  key: number;
   liveness: number;
-  loudness: number;
-  mode: number;
   speechiness: number;
-  tempo: number;
-  time_signature: number;
   track_href: string;
   type: string;
   uri: string;
   valence: number;
-}
+};
 
 interface AudioMeta {
   analyzer_version: string;
@@ -177,7 +190,7 @@ interface AudioMeta {
   input_process: string;
 }
 
-interface TrackAnalysis {
+type TrackAnalysis = BasicAudioFeatures & {
   num_samples: number;
   duration: number;
   sample_md5: string;
@@ -187,15 +200,6 @@ interface TrackAnalysis {
   analysis_channels: number;
   end_of_fade_in: number;
   start_of_fade_out: number;
-  loudness: number;
-  tempo: number;
-  tempo_confidence: number;
-  time_signature: number;
-  time_signature_confidence: number;
-  key: number;
-  key_confidence: number;
-  mode: number;
-  mode_confidence: number;
   codestring: string;
   code_version: string;
   echoprintstring: string;
@@ -204,24 +208,12 @@ interface TrackAnalysis {
   synch_version: number;
   rhythmstring: string;
   rhythm_version: 1;
-}
+};
 
 interface Bar {
   start: number;
   duration: number;
   confidence: number;
-}
-
-interface Section extends Bar {
-  loudness: number;
-  tempo: number;
-  tempo_confidence: number;
-  key: number;
-  key_confidence: number;
-  mode: number;
-  mode_confidence: number;
-  time_signature: number;
-  time_signature_confidence: number;
 }
 
 interface Segment extends Bar {
@@ -230,6 +222,8 @@ interface Segment extends Bar {
   pitches: number[];
   timbre: number[];
 }
+
+type Section = BasicAudioFeatures[];
 
 export interface AudioAnalysis {
   meta: AudioMeta;
